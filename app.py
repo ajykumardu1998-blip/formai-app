@@ -62,7 +62,8 @@ with st.sidebar:
   )
   st.markdown("---")
 
-  st.link_button("Paytm / UPI से पे करें", upi_intent)
+  st.link_button("Paytm / UPI से पे करें", f"upi://pay?pa={REAL_UPI_ID}&pn=Ajay%20Kumar&cu=INR")
+    
     
   st.image(qr_api, caption="Scan QR to Pay (Ajay Kumar)", width=220)
 
