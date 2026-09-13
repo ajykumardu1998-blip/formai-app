@@ -62,17 +62,8 @@ with st.sidebar:
   )
   st.markdown("---")
 
-  st.header("Fees & Online Payment")
-  upi_intent = f"upi://pay?pa={REAL_UPI_ID}&pn=Ajay%20Kumar&cu=INR&tn=Online%20Ajay%20Documentation"
-  st.markdown(
-      f'<a href="{upi_intent}"><button style="width: 100%; background-color:'
-      " #002970; color: white; border: none; padding: 10px; border-radius:"
-      " 8px; font-weight: bold; cursor: pointer; margin-bottom: 12px;">Paytm /"
-      " PhonePe / GPay से पे करें</button></a>",
-      unsafe_allow_html=True,
-  )
-
-  qr_api = f"https://api.qrserver.com/v1/create-qr-code/?size=240x240&data={upi_intent}"
+  st.link_button("Paytm / UPI से पे करें", upi_intent)
+    
   st.image(qr_api, caption="Scan QR to Pay (Ajay Kumar)", width=220)
 
 
