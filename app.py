@@ -1,5 +1,6 @@
 import io
 import os
+import urllib.parse
 import zipfile
 from google import genai
 from google.genai import types
@@ -7,19 +8,17 @@ from PIL import Image
 import streamlit as st
 
 st.set_page_config(
-    page_title="ऑनलाइन अजय डॉक्यूमेंटेशन | AI सर्विस सेंटर",
+    page_title="ऑनलाइन अजय डॉक्यूमेंटेशन | 24x7 AI सेंटर",
     page_icon="🚀",
     layout="wide",
 )
 
-# 24x7 अलर्ट पट्टी
+# 24x7 रनिंग अलर्ट पट्टी
 st.markdown(
     """
-<div style="background: linear-gradient(90deg, #120000, #400000, #120000); padding: 12px 0; border-top: 2px solid #ff3333; border-bottom: 2px solid #ffcc00; margin-bottom: 20px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(255,0,0,0.3);">
+<div style="background: linear-gradient(90deg, #111111, #4a0000, #111111); padding: 12px 0; border-top: 2px solid #ff3333; border-bottom: 2px solid #ffcc00; margin-bottom: 20px; border-radius: 8px; overflow: hidden;">
     <marquee behavior="scroll" direction="left" scrollamount="7" style="color: #ffffff; font-size: 15px; font-weight: bold;">
-        🔥 <span style="background-color: #e60000; padding: 2px 8px; border-radius: 4px;">LATEST GOVT FORMS</span>
-        📢 SSC GD कांस्टेबल, Railway RRB, इंडिया पोस्ट GDS, दिल्ली DSSSB और आर्मी अग्निवीर भर्ती शुरू! 
-        ⚠️ फोटो 50KB व हस्ताक्षर 20KB में तुरंत सेट कराएं। ⚡ संचालक: अजय कुमार (हेल्पलाइन: 8920798182) — 24 घंटे ऑनलाइन सेवा उपलब्ध ⚡
+        LATEST GOVT FORMS: SSC GD Constable, Railway RRB, India Post GDS, Army Agniveer | Helpline: +91-8920798182 (Ajay Kumar) | 24 Hours Online Service Available
     </marquee>
 </div>
 """,
@@ -28,7 +27,7 @@ st.markdown(
 
 st.title("🚀 Online Ajay Documentation")
 st.caption(
-    "👨‍💻 Founder: **Ajay Kumar** | 24/7 Smart Cyber Cafe & Document Agent"
+    "Founder: Ajay Kumar | 24/7 Autonomous Cyber Cafe & Document Agent"
     " (Powered by Google Gemini)"
 )
 st.markdown("---")
@@ -36,41 +35,45 @@ st.markdown("---")
 os.makedirs("uploads", exist_ok=True)
 os.makedirs("processed", exist_ok=True)
 
-# परमानेंट क्रेडेंशियल्स
+# क्रेडेंशियल्स
 GEMINI_KEY = "AQ.Ab8RN6IzcVfBVpTL72B4hzX3ZI-igomdURxweRXz0urq3bDwfQ"
 REAL_UPI_ID = "paytm.s3qpm6x@pty"
+WHATSAPP_NUMBER = "918920798182"
 
 client = genai.Client(api_key=GEMINI_KEY)
 
-# साइडबार (पेमेंट व संपर्क)
+# साइडबार
 with st.sidebar:
-  st.header("📞 24×7 सहायता केंद्र")
-  st.markdown("👤 **संचालक:** अजय कुमार (Ajay Kumar)")
-  st.markdown("📱 **मोबाइल:** [+91-8920798182](tel:8920798182)")
-  st.markdown(f"💳 **UPI ID:** `{REAL_UPI_ID}`")
+  st.header("24x7 Support & Contact")
+  st.markdown("Operator: **Ajay Kumar**")
+  st.markdown("Helpline: [+91-8920798182](tel:8920798182)")
+  st.markdown(f"UPI ID: `{REAL_UPI_ID}`")
 
-  wa_url = "https://wa.me/918920798182?text=नमस्ते%20अजय%20जी,%20मुझे%20ऑनलाइन%20फॉर्म%20भरवाना%20है।"
+  initial_msg = urllib.parse.quote(
+      "नमस्ते अजय जी! मुझे ऑनलाइन फॉर्म भरवाने में सहायता चाहिए।"
+  )
+  wa_link = f"https://wa.me/{WHATSAPP_NUMBER}?text={initial_msg}"
   st.markdown(
-      f'<a href="{wa_url}" target="_blank"><button style="width: 100%;'
+      f'<a href="{wa_link}" target="_blank"><button style="width: 100%;'
       " background-color: #25D366; color: white; border: none; padding: 10px;"
       " border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom:"
-      ' 10px;">💬 WhatsApp पर बात करें</button></a>',
+      ' 12px;">WhatsApp पर संपर्क करें</button></a>',
       unsafe_allow_html=True,
   )
   st.markdown("---")
 
-  st.header("💳 फीस ऑनलाइन जमा करें")
+  st.header("Fees & Online Payment")
   upi_intent = f"upi://pay?pa={REAL_UPI_ID}&pn=Ajay%20Kumar&cu=INR&tn=Online%20Ajay%20Documentation"
   st.markdown(
       f'<a href="{upi_intent}"><button style="width: 100%; background-color:'
       " #002970; color: white; border: none; padding: 10px; border-radius:"
-      " 8px; font-weight: bold; cursor: pointer; margin-bottom: 12px;">📲"
-      " Paytm / PhonePe / GPay से पे करें</button></a>",
+      " 8px; font-weight: bold; cursor: pointer; margin-bottom: 12px;">Paytm /"
+      " PhonePe / GPay से पे करें</button></a>",
       unsafe_allow_html=True,
   )
 
   qr_api = f"https://api.qrserver.com/v1/create-qr-code/?size=240x240&data={upi_intent}"
-  st.image(qr_api, caption="QR कोड स्कैन करें (Ajay Kumar)", width=220)
+  st.image(qr_api, caption="Scan QR to Pay (Ajay Kumar)", width=220)
 
 
 def smart_resize(input_path, output_path, target_max_kb):
@@ -92,28 +95,25 @@ PORTALS = {
     "DSSSB": "https://dsssbonline.nic.in/",
 }
 
-tab_chat, tab_form, tab_ocr = st.tabs([
-    "💬 24×7 Gemini AI चैट (लाइव बात करें)",
-    "📝 फॉर्म भरें व डॉक्यूमेंट रीसाइज़",
-    "🔍 ऑटो मार्कशीट/आधार स्कैनर (OCR)",
-])
+tab_chat, tab_form, tab_ocr = st.tabs(
+    ["Gemini AI चैट", "फॉर्म व डॉक्यूमेंट रीसाइज़", "मार्कशीट/आधार स्कैनर"]
+)
 
 # --- TAB 1: Gemini AI चैटबॉट ---
 with tab_chat:
-  st.subheader("🗣️ अजय कुमार का स्मार्ट Gemini AI असिस्टेंट")
+  st.subheader("स्मार्ट Gemini AI असिस्टेंट (अजय कुमार)")
   st.write(
-      "सरकारी फॉर्म, लास्ट डेट, उम्र सीमा, फीस या डॉक्यूमेंट नियमों की जानकारी"
-      " सीधे पूछें:"
+      "सरकारी भर्ती, योग्यता, उम्र सीमा, फीस या डॉक्यूमेंट्स के नियमों के बारे"
+      " में यहाँ पूछें:"
   )
 
   if "chat_history" not in st.session_state:
     st.session_state.chat_history = [{
         "role": "assistant",
         "content": (
-            "नमस्ते भाई! 🙏 मैं अजय कुमार जी का स्मार्ट AI असिस्टेंट (Google"
-            " Gemini) हूँ। आप मुझसे किसी भी सरकारी भर्ती (जैसे GDS, SSC,"
-            " Railway, Army, Police), उम्र सीमा, जरूरी डॉक्यूमेंट्स या फॉर्म"
-            " फीस के बारे में पूछ सकते हैं। बताइए किस फॉर्म की जानकारी चाहिए?"
+            "नमस्ते भाई! मैं अजय कुमार जी का Google Gemini AI असिस्टेंट हूँ।"
+            " सरकारी भर्ती (GDS, SSC, Railway, Army आदि), लास्ट डेट, फीस या"
+            " जरूरी कागजात के बारे में कुछ भी पूछिए।"
         ),
     }]
 
@@ -121,33 +121,32 @@ with tab_chat:
     with st.chat_message(msg["role"]):
       st.markdown(msg["content"])
 
-  if user_msg := st.chat_input("यहाँ अपना सवाल लिखें..."):
+  if user_msg := st.chat_input("अपना सवाल यहाँ लिखें..."):
     st.session_state.chat_history.append({"role": "user", "content": user_msg})
     with st.chat_message("user"):
       st.markdown(user_msg)
 
     with st.chat_message("assistant"):
-      with st.spinner("Gemini सोचकर जवाब दे रहा है..."):
+      with st.spinner("Gemini सोच रहा है..."):
         try:
-          sys_instruct = (
+          sys_prompt = (
               "आप 'ऑनलाइन अजय डॉक्यूमेंटेशन' (संचालक: अजय कुमार, मोबाइल:"
-              " 8920798182) के AI सहायक हैं। आप बिल्कुल इंसानों की तरह सहज,"
-              " आदरपूर्वक और शुद्ध हिंदी में बात करते हैं। सरकारी नौकरी, फॉर्म"
-              " भरने की प्रक्रिया, फीस, उम्र सीमा और फोटो/साइन की गाइडलाइन का"
-              " सटीक और आसान जवाब दें।"
+              " 8920798182) के AI सहायक हैं। भारतीय सरकारी भर्तियों, उम्र"
+              " सीमा, फीस, योग्यता और फोटो/हस्ताक्षर के नियमों का बिल्कुल सटीक"
+              " और सरल जवाब शुद्ध हिंदी में दें।"
           )
           res = client.models.generate_content(
               model="gemini-2.5-flash",
               contents=user_msg,
               config=types.GenerateContentConfig(
-                  system_instruction=sys_instruct, temperature=0.6
+                  system_instruction=sys_prompt, temperature=0.6
               ),
           )
           bot_reply = res.text
         except Exception:
           bot_reply = (
-              "नमस्ते भाई! सर्वर थोड़ा व्यस्त है। फॉर्म भरवाने के लिए आप सीधे"
-              " अजय कुमार जी से 8920798182 पर WhatsApp या कॉल कर सकते हैं।"
+              "माफ़ करना भाई, सर्वर व्यस्त है। सीधे सहायता के लिए अजय कुमार जी"
+              " से 8920798182 पर संपर्क करें।"
           )
 
         st.markdown(bot_reply)
@@ -157,143 +156,143 @@ with tab_chat:
 
 # --- TAB 2: फॉर्म आवेदन व रीसाइज़र ---
 with tab_form:
-  st.subheader("1. सरकारी भर्ती चुनें")
-  form_target = st.text_input(
-      "फॉर्म का नाम दर्ज करें (उदा: GDS, SSC, Railway):", value="GDS"
-  )
+  st.subheader("1. भर्ती चयन")
+  form_target = st.text_input("फॉर्म का नाम लिखें (उदा: GDS, SSC):", value="GDS")
 
-  p_url = None
+  portal_url = None
   for k in PORTALS:
     if k in form_target.upper():
-      p_url = PORTALS[k]
+      portal_url = PORTALS[k]
       break
 
-  if p_url:
+  if portal_url:
     st.info(
-        f"🌐 **{form_target.upper()}** आधिकारिक पोर्टल: [यहाँ क्लिक करके सीधे"
-        f" वेबसाइट खोलें]({p_url})"
+        f"🌐 {form_target.upper()} का आधिकारिक पोर्टल: [यहाँ क्लिक करके सीधे"
+        f" वेबसाइट खोलें]({portal_url})"
     )
 
   st.success(
-      f"📋 **{form_target.upper()}** के लिए अनिवार्य: 10वीं मार्कशीट, आधार"
-      " कार्ड, फोटो (50 KB से कम), हस्ताक्षर (20 KB से कम)"
+      f"📋 {form_target.upper()} नियम: फोटो 50 KB से कम, हस्ताक्षर 20 KB से"
+      " कम अनिवार्य हैं।"
   )
 
   st.markdown("---")
   st.subheader("2. आवेदक की जानकारी")
   c1, c2 = st.columns(2)
   with c1:
-    user_name = st.text_input("आवेदक का नाम (10th मार्कशीट अनुसार):")
-    father_name = st.text_input("पिता का नाम:")
+    u_name = st.text_input("आवेदक का नाम (10th मार्कशीट अनुसार):")
+    f_name = st.text_input("पिता का नाम:")
   with c2:
-    dob_val = st.text_input("जन्मतिथि (DD/MM/YYYY):")
-    phone_val = st.text_input("मोबाइल नंबर:")
+    dob = st.text_input("जन्मतिथि (DD/MM/YYYY):")
+    ph = st.text_input("मोबाइल नंबर:")
 
   st.markdown("---")
-  st.subheader("3. लाइव कैमरा व डॉक्यूमेंट अपलोड (ऑटो 50KB/20KB)")
+  st.subheader("3. डॉक्यूमेंट रीसाइज़ (50KB / 20KB)")
 
-  use_camera = st.checkbox("📷 लाइव कैमरा खोलें (पासपोर्ट फोटो खींचने के लिए)")
-  cam_image = None
-  if use_camera:
-    cam_image = st.camera_input("फोटो क्लिक करें")
+  use_cam = st.checkbox("लाइव कैमरा ऑन करें (पासपोर्ट फोटो के लिए)")
+  cam_pic = None
+  if use_cam:
+    cam_pic = st.camera_input("फोटो कैप्चर करें")
 
   files_up = st.file_uploader(
-      "📁 गैलरी से फोटो, साइन व मार्कशीट चुनें:",
+      "गैलरी से फोटो व हस्ताक्षर चुनें:",
       type=["jpg", "jpeg", "png"],
       accept_multiple_files=True,
   )
 
   all_docs = []
-  if cam_image:
-    all_docs.append(("live_photo.jpg", cam_image.getvalue()))
+  if cam_pic:
+    all_docs.append(("live_photo.jpg", cam_pic.getvalue()))
   if files_up:
     for f in files_up:
       all_docs.append((f.name, f.getvalue()))
 
-  if all_docs:
-    if st.button("⚡ डॉक्यूमेंट्स को 50KB/20KB में ऑटो-रीसाइज़ करें"):
-      with st.status(
-          "डॉक्यूमेंट्स सरकारी साइज में तैयार हो रहे हैं...", expanded=True
-      ) as status:
-        done_files = []
-        for fname, bdata in all_docs:
-          in_path = os.path.join("uploads", fname)
-          with open(in_path, "wb") as fp:
-            fp.write(bdata)
+  if all_docs and st.button("डॉक्यूमेंट्स 50KB/20KB में रीसाइज़ करें"):
+    with st.status("रीसाइज़िंग चालू है...", expanded=True) as status:
+      done_files = []
+      for fname, bdata in all_docs:
+        in_p = os.path.join("uploads", fname)
+        with open(in_p, "wb") as fp:
+          fp.write(bdata)
 
-          fn_low = fname.lower()
-          out_path = os.path.join("processed", f"ready_{fname}")
-          if "sign" in fn_low:
-            smart_resize(in_path, out_path, 20)
-          elif "photo" in fn_low or "cam" in fn_low or "pic" in fn_low:
-            smart_resize(in_path, out_path, 50)
-          else:
-            smart_resize(in_path, out_path, 200)
-          done_files.append(out_path)
+        out_p = os.path.join("processed", f"ready_{fname}")
+        if "sign" in fname.lower():
+          smart_resize(in_p, out_p, 20)
+        else:
+          smart_resize(in_p, out_p, 50)
+        done_files.append(out_p)
 
-        status.update(
-            label="🎉 सभी डॉक्यूमेंट्स सही साइज में बन चुके हैं!",
-            state="complete",
-        )
+      status.update(label="सभी डॉक्यूमेंट्स तैयार हो चुके हैं!", state="complete")
 
-      z_buf = io.BytesIO()
-      with zipfile.ZipFile(z_buf, "w") as zf:
-        for df in done_files:
-          zf.write(df, os.path.basename(df))
+    z_buf = io.BytesIO()
+    with zipfile.ZipFile(z_buf, "w") as zf:
+      for df in done_files:
+        zf.write(df, os.path.basename(df))
 
-      st.download_button(
-          label="📦 तैयार डॉक्यूमेंट्स डाउनलोड करें (ZIP)",
-          data=z_buf.getvalue(),
-          file_name="Govt_Ready_Docs.zip",
-          mime="application/zip",
-      )
+    st.download_button(
+        "रीसाइज़ डॉक्यूमेंट्स डाउनलोड करें (ZIP)",
+        z_buf.getvalue(),
+        "ready_docs.zip",
+        "application/zip",
+    )
 
-      # डायरेक्ट WhatsApp पर कस्टमर डेटा भेजना
-      wa_msg = (
-          f"नमस्ते अजय जी, मैंने फॉर्म डिटेल भर दी है:%0Aफॉर्म:"
-          f" {form_target.upper()}%0Aनाम: {user_name}%0Aपिता का नाम:"
-          f" {father_name}%0ADOB: {dob_val}%0Aमोबाइल: {phone_val}"
-      )
-      send_wa_url = f"https://wa.me/918920798182?text={wa_msg}"
-      st.markdown(
-          f'<br><a href="{send_wa_url}" target="_blank"><button'
-          ' style="background-color: #25D366; color: white; border: none;'
-          " padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor:"
-          ' pointer; font-size: 16px;">📲 यह फॉर्म डेटा अजय जी को WhatsApp पर'
-          " भेजें</button></a>",
-          unsafe_allow_html=True,
-      )
+    wa_text = f"""*ऑनलाइन अजय डॉक्यूमेंटेशन - नया फॉर्म आवेदन*
+फॉर्म का नाम: {form_target.upper()}
+आवेदक का नाम: {u_name}
+पिता का नाम: {f_name}
+जन्मतिथि: {dob}
+मोबाइल: {ph}
+स्टेटस: डॉक्यूमेंट्स 50KB/20KB में तैयार हैं।"""
 
-# --- TAB 3: स्मार्ट OCR स्कैनर ---
+    enc_msg = urllib.parse.quote(wa_text)
+    wa_submit_url = f"https://wa.me/{WHATSAPP_NUMBER}?text={enc_msg}"
+    st.markdown(
+        f'<br><a href="{wa_submit_url}" target="_blank"><button'
+        ' style="background-color: #25D366; color: white; border: none;'
+        " padding: 12px 22px; border-radius: 8px; font-weight: bold; cursor:"
+        ' pointer; font-size: 15px;">📲 यह पूरा फॉर्म डेटा अजय जी को WhatsApp पर'
+        " भेजें</button></a>",
+        unsafe_allow_html=True,
+    )
+
+# --- TAB 3: OCR स्कैनर ---
 with tab_ocr:
-  st.subheader("🔍 AI मार्कशीट व आधार कार्ड स्कैनर")
+  st.subheader("AI मार्कशीट व आधार कार्ड स्कैनर")
   st.write(
-      "मार्कशीट या आधार की फोटो अपलोड करें—Gemini AI उसमें से नाम, पिता का नाम और"
-      " DOB खुद निकाल देगा:"
+      "मार्कशीट या आधार कार्ड की साफ़ फोटो अपलोड करें—Gemini AI उसमें से विवरण"
+      " निकाल देगा:"
   )
 
   doc_pic = st.file_uploader(
-      "दस्तावेज़ की साफ़ फोटो चुनें:",
-      type=["jpg", "jpeg", "png"],
-      key="ocr_uploader",
+      "दस्तावेज़ की फोटो अपलोड करें:", type=["jpg", "jpeg", "png"], key="ocr"
   )
-  if doc_pic and st.button("⚡ AI से डेटा स्कैन करें"):
+  if doc_pic and st.button("AI से स्कैन करें"):
     with st.spinner("Gemini AI दस्तावेज़ पढ़ रहा है..."):
       try:
         raw_img = Image.open(doc_pic)
-        ocr_prompt = (
-            "इस दस्तावेज़ (मार्कशीट या आधार कार्ड) को ध्यान से पढ़ें और निम्नलिखित"
-            " जानकारी निकालें:\n1. पूरा नाम\n2. पिता का नाम\n3. जन्मतिथि (DOB)\n4."
-            " रोल नंबर/पहचान संख्या (यदि हो)\nसाफ़ और स्पष्ट हिंदी में लिखें।"
+        prompt = (
+            "इस दस्तावेज़ को ध्यान से पढ़ें और निम्नलिखित जानकारी साफ़ निकालें:"
+            " 1. नाम 2. पिता का नाम 3. जन्मतिथि (DOB) 4. रोल नंबर/पहचान संख्या।"
         )
         ocr_res = client.models.generate_content(
-            model="gemini-2.5-flash", contents=[raw_img, ocr_prompt]
+            model="gemini-2.5-flash", contents=[raw_img, prompt]
         )
-        st.success("✅ दस्तावेज़ से मिला विवरण:")
+        st.success("दस्तावेज़ से मिला विवरण:")
         st.markdown(ocr_res.text)
-      except Exception as ex:
-        st.error(
-            "स्कैन करने में समस्या आई, कृपया फोटो साफ़ खींचकर दोबारा अपलोड करें।"
+
+        ocr_wa_text = (
+            f"*दस्तावेज़ स्कैन विवरण (अजय डॉक्यूमेंटेशन):*\n{ocr_res.text}"
         )
-
-
+        ocr_enc = urllib.parse.quote(ocr_wa_text)
+        st.markdown(
+            f'<br><a href="https://wa.me/{WHATSAPP_NUMBER}?text={ocr_enc}"'
+            ' target="_blank"><button style="background-color: #25D366; color:'
+            " white; border: none; padding: 10px 18px; border-radius: 8px;"
+            ' font-weight: bold; cursor: pointer;">यह डेटा WhatsApp पर'
+            " भेजें</button></a>",
+            unsafe_allow_html=True,
+        )
+      except Exception:
+        st.error(
+            "दस्तावेज़ स्कैन नहीं हो सका, कृपया साफ़ फोटो दोबारा अपलोड करें।"
+        )
